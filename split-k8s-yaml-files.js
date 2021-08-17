@@ -65,7 +65,7 @@ S.pipe([
           return w;
         },
         (w) => Deno.close(w.rid),
-      ]))((_) => console.log("Ignoring non-kubernetes yaml file")),
+      ]))((_) => console.warn("Ignoring non-kubernetes yaml file")),
     ])(S.snd(p));
   }),
 ])(Deno.args);
