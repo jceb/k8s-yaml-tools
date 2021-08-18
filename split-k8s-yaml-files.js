@@ -5,7 +5,7 @@
 // cat myfile.yaml | print-yaml-paths
 // print-yaml-paths myfile.yaml
 
-import { parseAll } from "https://deno.land/std@0.103.0/encoding/yaml.ts";
+import { parseAll, stringify } from "https://deno.land/std@0.103.0/encoding/yaml.ts";
 import {
   readAllSync,
   writeAllSync,
@@ -61,7 +61,7 @@ S.pipe([
           );
         },
         (w) => {
-          writeAllSync(w, new TextEncoder().encode(S.snd(p)));
+          writeAllSync(w, new TextEncoder().encode(stringify(S.snd(p))));
           return w;
         },
         (w) => Deno.close(w.rid),
