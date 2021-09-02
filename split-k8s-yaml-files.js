@@ -5,13 +5,18 @@
 // cat myfile.yaml | print-yaml-paths
 // print-yaml-paths myfile.yaml
 
-import { parseAll, stringify } from "https://deno.land/std@0.103.0/encoding/yaml.ts";
+import {
+  parseAll,
+  stringify,
+} from "https://deno.land/std@0.103.0/encoding/yaml.ts";
 import {
   readAllSync,
   writeAllSync,
 } from "https://deno.land/std@0.103.0/io/util.ts";
 import S from "https://cdn.skypack.dev/sanctuary";
 import $ from "https://cdn.skypack.dev/sanctuary-def";
+import { printf } from "https://cdn.skypack.dev/fast-printf";
+
 // import * as l from "https://cdn.skypack.dev/fluture-sanctuary-types";
 // import { chain } from "https://cdn.skypack.dev/fluture";
 // let S = sanctuary.create({
@@ -51,7 +56,7 @@ S.pipe([
       S.ifElse(S.all(S.isJust))(S.pipe([
         S.justs,
         S.joinWith("-"),
-        (fn) => `generated/${S.fst(p)}-${fn}.yaml`,
+        (fn) => `generated/${printf("%03d", S.fst(p))}-${fn}.yaml`,
         log("Writing file:"),
         (fn) => {
           Deno.mkdirSync("generated/", { recursive: true });
