@@ -15,7 +15,7 @@ import {
 } from "https://deno.land/std@0.116.0/io/util.ts";
 import S from "https://cdn.skypack.dev/sanctuary?dts";
 import $ from "https://cdn.skypack.dev/sanctuary-def?dts";
-import { printf } from "https://cdn.skypack.dev/fast-printf?dts";
+// import { printf } from "https://cdn.skypack.dev/fast-printf?dts";
 
 // import * as l from "https://cdn.skypack.dev/fluture-sanctuary-types";
 // import { chain } from "https://cdn.skypack.dev/fluture";
@@ -29,6 +29,8 @@ const log = (msg) =>
     console.log(msg, o);
     return o;
   };
+
+const DESTDIR = "generated";
 
 S.pipe([
   S.ifElse((a) => S.size(a) === 0)(() => [S.Pair("stdin")(Deno.stdin)])(S.map(
@@ -50,16 +52,22 @@ S.pipe([
     S.pipe([
       (c) =>
         S.map((f) => f(c))([
-          S.gets(S.is($.String))(["metadata", "name"]),
           S.gets(S.is($.String))(["kind"]),
+          S.pipe([
+            S.gets(S.is($.String))(["metadata", "namespace"]),
+            S.fromMaybe("NoNameSpace"),
+            S.Just,
+          ]),
+          S.gets(S.is($.String))(["metadata", "name"]),
         ]),
       S.ifElse(S.all(S.isJust))(S.pipe([
         S.justs,
-        S.joinWith("-"),
-        (fn) => `generated/${printf("%03d", S.fst(p))}-${fn}.yaml`,
+        S.joinWith("_"),
+        // (fn) => `${DESTDIR}/${printf("%03d", S.fst(p))}-${fn}.yaml`,
+        (fn) => `${DESTDIR}/${fn}.yaml`,
         log("Writing file:"),
         (fn) => {
-          Deno.mkdirSync("generated/", { recursive: true });
+          Deno.mkdirSync(`${DESTDIR}/`, { recursive: true });
           return Deno.createSync(
             fn,
             { write: true },
