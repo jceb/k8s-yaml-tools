@@ -8,20 +8,20 @@
 import {
   parseAll,
   stringify,
-} from "https://deno.land/std@0.103.0/encoding/yaml.ts";
+} from "https://deno.land/std@0.116.0/encoding/yaml.ts";
 import {
   readAllSync,
   writeAllSync,
-} from "https://deno.land/std@0.103.0/io/util.ts";
-import S from "https://cdn.skypack.dev/sanctuary";
-import $ from "https://cdn.skypack.dev/sanctuary-def";
-import { printf } from "https://cdn.skypack.dev/fast-printf";
+} from "https://deno.land/std@0.116.0/io/util.ts";
+import S from "https://cdn.skypack.dev/sanctuary?dts";
+import $ from "https://cdn.skypack.dev/sanctuary-def?dts";
+import { printf } from "https://cdn.skypack.dev/fast-printf?dts";
 
 // import * as l from "https://cdn.skypack.dev/fluture-sanctuary-types";
 // import { chain } from "https://cdn.skypack.dev/fluture";
 // let S = sanctuary.create({
 //   checkTypes: false,
-//   env: sanctuary.env.concat(l.env),
+//   env: $.env,
 // });
 
 const log = (msg) =>
